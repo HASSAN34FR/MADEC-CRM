@@ -2,88 +2,46 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>MADEC Direct - Formulaire Interactions</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 30px; background: #f2f2f2; }
-        h2 { color: #003366; }
-        form { background: #fff; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        label { display: block; margin-top: 15px; font-weight: bold; }
-        input[type="text"], select, textarea {
-            width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc;
-        }
-        textarea { resize: vertical; }
-        .readonly { background-color: #e6e6e6; }
-        button {
-            margin-top: 20px; padding: 10px 15px; background-color: #007BFF; color: white;
-            border: none; border-radius: 5px; cursor: pointer;
-        }
-    </style>
-    <script>
-        async function autoFill() {
-            const codeClient = document.getElementById('codeClient').value;
-            if (codeClient.trim() === '') return;
-
-            const response = await fetch('https://script.google.com/macros/s/AKfycby2C3lEqyhDlv3dK9RZxh8fwKsRnOnCUKSVSkA6M2exxXkdheVLewSrbkz4tntNzFRrLg/exec?codeClient=' + codeClient);
-            const data = await response.json();
-
-            if (data.success) {
-                document.getElementById('nomClient').value = data.nomClient;
-                document.getElementById('typeActivite').value = data.typeActivite;
-                document.getElementById('segment').value = data.segment;
-            } else {
-                alert("Client non trouvé !");
-            }
-        }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulaire MADEC Direct</title>
 </head>
-<body>
-    <h2>Formulaire de Suivi - MADEC Direct</h2>
-    <form method="POST" action="https://script.google.com/macros/s/AKfycby2C3lEqyhDlv3dK9RZxh8fwKsRnOnCUKSVSkA6M2exxXkdheVLewSrbkz4tntNzFRrLg/exec">
-        <label for="codeClient">Code client</label>
-        <input type="text" id="codeClient" name="codeClient" onblur="autoFill()" required>
+<body style="font-family: Arial, sans-serif; background-color: #f3f3f3; padding: 20px;">
+  <h1 style="color: #1e3a8a;">🧾 Formulaire MADEC Direct</h1>
+  <form id="madecForm" action="https://script.google.com/macros/s/AKfycby2C3lEqyhDlv3dK9RZxh8fwKsRnOnCUKSVSkA6M2exxXkdheVLewSrbkz4tntNzFRrLg/exec" method="POST">
+    <label>Code client :</label><br>
+    <input type="text" name="Code_client" required><br><br>
 
-        <label for="nomClient">Nom du client</label>
-        <input type="text" id="nomClient" name="nomClient" class="readonly" readonly>
+    <label>Type d’interaction :</label><br>
+    <select name="Type_interaction" required>
+      <option value="Entrant">Entrant</option>
+      <option value="Sortant">Sortant</option>
+    </select><br><br>
 
-        <label for="typeActivite">Type d’activité</label>
-        <input type="text" id="typeActivite" name="typeActivite" class="readonly" readonly>
+    <label>Canal :</label><br>
+    <select name="Canal" required>
+      <option value="Téléphone">Téléphone</option>
+      <option value="WhatsApp">WhatsApp</option>
+      <option value="Email">Email</option>
+    </select><br><br>
 
-        <label for="segment">Segment</label>
-        <input type="text" id="segment" name="segment" class="readonly" readonly>
+    <label>Motif :</label><br>
+    <select name="Motif" required>
+      <option value="Commande">Commande</option>
+      <option value="Réclamation">Réclamation</option>
+      <option value="Produit manquant">Produit manquant</option>
+      <option value="Erreur de livraison">Erreur de livraison</option>
+      <option value="Demande urgente">Demande urgente</option>
+      <option value="Prix non conforme">Prix non conforme</option>
+      <option value="Problème qualité">Problème qualité</option>
+      <option value="Client mécontent">Client mécontent</option>
+      <option value="Autre">Autre</option>
+    </select><br><br>
 
-        <label for="typeInteraction">Type d’interaction</label>
-        <select id="typeInteraction" name="typeInteraction" required>
-            <option value="entrant">Entrant</option>
-            <option value="sortant">Sortant</option>
-        </select>
+    <label>Commentaire :</label><br>
+    <textarea name="Commentaire" rows="4" cols="50"></textarea><br><br>
 
-        <label for="canal">Canal</label>
-        <select id="canal" name="canal" required>
-            <option value="Téléphone">Téléphone</option>
-            <option value="WhatsApp">WhatsApp</option>
-            <option value="Email">Email</option>
-            <option value="Visite">Visite</option>
-        </select>
-
-        <label for="motif">Motif</label>
-        <select id="motif" name="motif" required>
-            <option value="Commande">Commande</option>
-            <option value="Réclamation">Réclamation</option>
-            <option value="Demande d'information">Demande d'information</option>
-            <option value="Problème qualité">Problème qualité</option>
-        </select>
-
-        <label for="sousMotif">Sous-motif</label>
-        <input type="text" id="sousMotif" name="sousMotif">
-
-        <label for="commentaire">Commentaire</label>
-        <textarea id="commentaire" name="commentaire" rows="4"></textarea>
-
-        <label for="nomOperateur">Nom de l’opérateur</label>
-        <input type="text" id="nomOperateur" name="nomOperateur" class="readonly" readonly value="Khadija">
-
-        <button type="submit">Enregistrer</button>
-    </form>
+    <button type="submit">📤 Envoyer</button>
+  </form>
 </body>
 </html>
